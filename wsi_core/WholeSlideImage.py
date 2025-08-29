@@ -16,8 +16,9 @@ from wsi_core.wsi_utils import savePatchIter_bag_hdf5, initialize_hdf5_bag, coor
 import itertools
 from wsi_core.util_classes import isInContourV1, isInContourV2, isInContourV3_Easy, isInContourV3_Hard, Contour_Checking_fn
 from utils.file_utils import load_pkl, save_pkl
+import tifffile
 
-Image.MAX_IMAGE_PIXELS = 933120000
+Image.MAX_IMAGE_PIXELS = 9331200000000
 
 class WholeSlideImage(object):
     def __init__(self, path):
@@ -91,7 +92,7 @@ class WholeSlideImage(object):
         asset_dict = {'holes': self.holes_tissue, 'tissue': self.contours_tissue}
         save_pkl(mask_file, asset_dict)
 
-    def segmentTissue(self, seg_level=0, sthresh=20, sthresh_up = 255, mthresh=7, close = 0, use_otsu=False, 
+    def segmentTissue(self, mask_path, seg_level=0, sthresh=20, sthresh_up = 255, mthresh=7, close = 0, use_otsu=False, 
                             filter_params={'a_t':100}, ref_patch_size=512, exclude_ids=[], keep_ids=[]):
         """
             Segment the tissue via HSV -> Median thresholding -> Binary threshold
@@ -149,11 +150,17 @@ class WholeSlideImage(object):
             return foreground_contours, hole_contours
         # pdb.set_trace()
         
-        img = np.array(self.wsi.read_region((0,0), seg_level, self.level_dim[seg_level]))
-        img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)  # Convert to HSV space
-        img_med = cv2.medianBlur(img_hsv[:,:,1], mthresh)  # Apply median blurring
-        
-       
+        #img = np.array(self.wsi.read_region((0,0), seg_level, self.level_dim[seg_level]))
+
+        # Read the provided mask
+        mask_np = tifffile.imread(mask_path)  # Loads as NumPy array
+        # Resize mask to match the WSI segmentation level dimensions
+        #mask_np = cv2.resize(mask_np, self.level_dim[seg_level], interpolation=cv2.INTER_NEAREST)
+
+        #img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)  # Convert to HSV space
+        #img_med1 = cv2.medianBlur(img_hsv[:,:,1], mthresh)  # Apply median blurring
+        img_med = mask_np  # Use the provided mask directly
+
         # Thresholding
         if use_otsu:
             _, img_otsu = cv2.threshold(img_med, 0, sthresh_up, cv2.THRESH_OTSU+cv2.THRESH_BINARY)
