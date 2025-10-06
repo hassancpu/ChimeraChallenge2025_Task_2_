@@ -65,6 +65,9 @@ python extract_features.py \
     --feat_dir ./CHIM_ostu_10x/feat_uni \
     --batch_size 256 \
     --slide_ext .tif
+    
+# Coords Extraction
+python coord.py
 
 # 3️⃣ Training
 python train.py \
