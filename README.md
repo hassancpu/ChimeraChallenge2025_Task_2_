@@ -10,24 +10,26 @@ This repository contains code, models, and instructions for reproducing experime
 1. [Overview](#overview)  
 2. [Data](#data)  
 3. [Full Pipeline Usage](#full-pipeline-usage)  
-4. [Training & Evaluation](#training--evaluation)  
+4. [Results](#results)  
 5. [License](#license)  
 
 ---
 
+<a name="overview"></a>
 ## 🧠 Overview
 Task 2 focuses on **BCG response subtype prediction** using multi-modal data:  
 - **Histopathology slides**  
 - **Clinical features**  
 
-**Pipeline Highlights:**
-- Patch-level feature extraction with **UNI model**  
-- Slide-level aggregation using **MADMIL**  
-- Concatenation of the slide embedding and clinical data  
-- Label prediction using a **linear classifier**  
+<p align="left">
+  <img src="framework.png" alt="Framework">
+  <br>
+  <em>Figure 1: Framework of the proposed method. Patch features are first extracted using the UNI model, and slide-level representations are generated with MADMIL. These representations, together with clinical data, are concatenated. Finally, the slide label is predicted using a linear fully connected classifier.</em>
+</p>
 
 ---
 
+<a name="data"></a>
 ## 📂 Data
 The CHIMERA Task 2 dataset must be downloaded from the official challenge website.  
 Organize the data as follows:  
@@ -41,6 +43,7 @@ clinical_preprocessor.pkl # Preprocessing object for clinical features
 
 ---
 
+<a name="full-pipeline-usage"></a>
 ## 🛠 Full Pipeline Usage
 
 Run the complete workflow for Task 2 in sequence:
@@ -86,6 +89,10 @@ python eval.py \
 
 ---
 
+<a name="results"></a>
+## 📊 Results
+
+<a name="license"></a>
 ## ⚖ License
 
 This repository is licensed under MIT License.
