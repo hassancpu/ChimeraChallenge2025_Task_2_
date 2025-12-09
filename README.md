@@ -92,7 +92,7 @@ python eval.py \
 <a name="results"></a>
 ## 📊 Results
 
-- Our method achieved an F1 score of 0.61 on the final test phase, ranking 7th overall in the challenge.
+- Our method achieved an **F1 score of 0.61** on the final test phase, ranking 7th overall in the challenge.
 
 <a name="license"></a>
 ## ⚖ License
